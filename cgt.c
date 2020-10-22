@@ -45,8 +45,9 @@
 int ADChannel=0;
 int ch[4];
 int count = 0;
-int dis_value = 0;
+int dis_value = 0;   // 展示的值
 int target = 0;
+int transMark = 0;  // 采样标志
 
 //显示码
 unsigned char g_aDisplayBuf[16]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07, \
@@ -356,11 +357,12 @@ void main(void)
        //program here
   	 dis_value++;
   	 count = 0;
+  	 transMark=1;  // 采样标志
    }
 
 
-  display(disValue);
-  display_upper(dis_value);
+  display(disValue);         // 左边两位数码管显示AD的结果
+  display_upper(dis_value);  // 右边两位数码管显示自增的值，0.5s自增一次
 
  }
 
