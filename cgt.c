@@ -48,6 +48,8 @@ int count = 0;
 int dis_value = 0;   // 展示的值
 int target = 0;
 int transMark = 0;  // 采样标志
+int DataGet = 0;
+int DataSend = 0;
 
 //显示码
 unsigned char g_aDisplayBuf[16]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07, \
@@ -150,11 +152,11 @@ void uart0_init(void)
 }
 
 #pragma interrupt_handler uart0_rx_isr:19
-void uart0_rx_isr(void)
+void uart0_rx_isr(void)   // 串口接受数据中断服务子程序，只要收到了新的值，就会自动触发此程序
 {
  //uart has received a character in UDR
- // todo 单片机从串口获取值，也就是接受
  // dataIn = UDR0; //从缓冲器中获取数据
+ DataGet = UDR0
 }
 
 //ADC initialize
@@ -219,7 +221,8 @@ void delay_ms(unsigned int n)
 void display(unsigned int value)
 {	
 	char i;
-	value = value / 4; //高八位，即除以4
+	//高八位，即除以4
+//	value = value / 4;
 //	int temp;
 	for(i=3;i<5;i++)
 	{
@@ -255,8 +258,8 @@ void display_upper(unsigned int value)
 	  case 4:PORTC |= (1<<W1);break;
 	 }
 	  
-	 PORTA = ~g_aDisplayBuf[ value - (value/10)*10 ];
-	 value /= 10;
+	 PORTA = ~g_aDisplayBuf[ value - (value/16)*16 ];
+	 value /= 16;
 	 delay_ms(1);
 	}
 }
@@ -372,13 +375,17 @@ void main(void)
   if(transMark == 1)// 采样周期到标志
   {
 	 transMark = 0;
+	 DataSend ++;
 	 while(!(UCSR0A & (1<<UDRE0)));  //判断串口发送寄存器是否不忙
-	 uart_Putchar(c_up);
+	 uart_Putchar((char)DataSend);
   }
 
 
-  display(disValue);         // 左边两位数码管显示AD的结果
-  display_upper(dis_value);  // 右边两位数码管显示自增的值，0.5s自增一次
+//  display(disValue);         // 左边两位数码管显示AD的结果
+//  display_upper(dis_value);  // 右边两位数码管显示自增的值，0.5s自增一次
+
+  display(disValue);         // 左边两位数码管显示单片机接收到的值
+  display_upper(DataSend);   // 右边两位数码管显示单片机发送给串口的值，自增，0.5S
 
  }
 
