@@ -156,7 +156,7 @@ void uart0_rx_isr(void)   // ´®¿Ú½ÓÊÜÊı¾İÖĞ¶Ï·şÎñ×Ó³ÌĞò£¬Ö»ÒªÊÕµ½ÁËĞÂµÄÖµ£¬¾Í»á×
 {
  //uart has received a character in UDR
  // dataIn = UDR0; //´Ó»º³åÆ÷ÖĞ»ñÈ¡Êı¾İ
- DataGet = UDR0
+ DataGet = UDR0;
 }
 
 //ADC initialize
