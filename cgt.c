@@ -153,7 +153,7 @@ void uart0_init(void)
 void uart0_rx_isr(void)
 {
  //uart has received a character in UDR
- // todo 获取串口值
+ // todo 单片机从串口获取值，也就是接受
  // dataIn = UDR0; //从缓冲器中获取数据
 }
 
@@ -261,7 +261,7 @@ void display_upper(unsigned int value)
 	}
 }
 
-void uart_Putchar(char c)	// 向串口发送数据
+void uart_Putchar(char c)	// 单片机向串口发送数据
 {
 	UDR0=c;
 }
@@ -368,7 +368,7 @@ void main(void)
    }
 
 
-  // 向单片机发送数值
+  // 单片机向串口发送数值
   if(transMark == 1)// 采样周期到标志
   {
 	 transMark = 0;
