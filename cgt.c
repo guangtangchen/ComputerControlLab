@@ -50,6 +50,7 @@ int target = 0;
 int transMark = 0;  // ²ÉÑù±êÖ¾
 int DataGet = 0;
 int DataSend = 0;
+char get ;
 
 //ÏÔÊ¾Âë
 unsigned char g_aDisplayBuf[16]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07, \
@@ -91,7 +92,7 @@ void timer0_ovf_isr(void)
 {
  TCNT0 = 0x64; //reload counter value
  count++;   // 10msÒ»´Î
- 
+
 }
 
 //TIMER1 initialize - prescale:8
@@ -156,7 +157,8 @@ void uart0_rx_isr(void)   // ´®¿Ú½ÓÊÜÊý¾ÝÖÐ¶Ï·þÎñ×Ó³ÌÐò£¬Ö»ÒªÊÕµ½ÁËÐÂµÄÖµ£¬¾Í»á×
 {
  //uart has received a character in UDR
  // dataIn = UDR0; //´Ó»º³åÆ÷ÖÐ»ñÈ¡Êý¾Ý
- DataGet = UDR0;
+ get = UDR0;
+ DataGet = (int)get;
 }
 
 //ADC initialize
@@ -193,9 +195,9 @@ void init_devices(void)
  //all peripherals are now initialized
 }
 
-//------------------------------------------------------------------------------  
+//------------------------------------------------------------------------------
 void delay_1us(void)
-{ 
+{
   NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();NOP();
 }
 
@@ -217,16 +219,16 @@ void delay_ms(unsigned int n)
    }
 }
 
-//------------------------------------------------------------------------------  
+//------------------------------------------------------------------------------
 void display(unsigned int value)
-{	
+{
 	char i;
 	//¸ß°ËÎ»£¬¼´³ýÒÔ4
 //	value = value / 4;
 //	int temp;
 	for(i=3;i<5;i++)
 	{
-	 PORTC &=~ 0xF0; 
+	 PORTC &=~ 0xF0;
 	 PORTA = 0xFF;
 	 switch(i)
 	 {
@@ -235,7 +237,7 @@ void display(unsigned int value)
 	  case 3:PORTC |= (1<<W2);break;
 	  case 4:PORTC |= (1<<W1);break;
 	 }
-	  
+
 	 PORTA = ~g_aDisplayBuf[ value - (value/16)*16 ];
 	 value /= 16;
 	 delay_ms(1);
@@ -243,12 +245,12 @@ void display(unsigned int value)
 }
 
 void display_upper(unsigned int value)
-{	
+{
 	char i;
 //	int temp;
 	for(i=1;i<3;i++)
 	{
-	 PORTC &=~ 0xF0; 
+	 PORTC &=~ 0xF0;
 	 PORTA = 0xFF;
 	 switch(i)
 	 {
@@ -257,7 +259,7 @@ void display_upper(unsigned int value)
 	  case 3:PORTC |= (1<<W2);break;
 	  case 4:PORTC |= (1<<W1);break;
 	 }
-	  
+
 	 PORTA = ~g_aDisplayBuf[ value - (value/16)*16 ];
 	 value /= 16;
 	 delay_ms(1);
@@ -276,12 +278,12 @@ void main(void)
  int pwmValue[4]={0,0,0,0};
  int disValue=0;
  int key=0;
- 
+
  init_devices();
  //insert your functional code here...
 
- 
- 
+
+
  while(1)
  {
 
@@ -301,11 +303,11 @@ void main(void)
   //ÂëÖÆ×ª»»1£¬ÓÉ0~1023µ½-511~512
   target = ch[0] - 511;
 
-  
+
   // zº¯Êý´¦Àí
   // code here
 
-  
+
   //ÂëÖÆ×ª»»2£¬ÓÉ-511~512µ½0~2047µ½
   target = (target + 511) * 2;
 
@@ -384,10 +386,11 @@ void main(void)
 //  display(disValue);         // ×ó±ßÁ½Î»ÊýÂë¹ÜÏÔÊ¾ADµÄ½á¹û
 //  display_upper(dis_value);  // ÓÒ±ßÁ½Î»ÊýÂë¹ÜÏÔÊ¾×ÔÔöµÄÖµ£¬0.5s×ÔÔöÒ»´Î
 
-  display(disValue);         // ×ó±ßÁ½Î»ÊýÂë¹ÜÏÔÊ¾µ¥Æ¬»ú½ÓÊÕµ½µÄÖµ
+  display(DataGet);         // ×ó±ßÁ½Î»ÊýÂë¹ÜÏÔÊ¾µ¥Æ¬»ú½ÓÊÕµ½µÄÖµ
   display_upper(DataSend);   // ÓÒ±ßÁ½Î»ÊýÂë¹ÜÏÔÊ¾µ¥Æ¬»ú·¢ËÍ¸ø´®¿ÚµÄÖµ£¬×ÔÔö£¬0.5S
 
  }
 
 }
+
 
