@@ -87,12 +87,7 @@ void timer0_init(void)
 void timer0_ovf_isr(void)
 {
  TCNT0 = 0x64; //reload counter value
- count++;
- if(count>=50){
-     //program here
-	 dis_value++;
-	 count = 0;
- }
+ count++;   // 10ms一次
  
 }
 
@@ -350,7 +345,13 @@ void main(void)
   OCR3BL = pwmValue[2];
   OCR3CH = pwmValue[3]>>8;
   OCR3CL = pwmValue[3];
-  
+
+  // 10ms中断一次，50次就是500ms，是我们的一个周期
+  if(count>=50){
+       //program here
+  	 dis_value++;
+  	 count = 0;
+   }
   display(disValue);
   display_upper(dis_value);
   //delay_ms(200);
