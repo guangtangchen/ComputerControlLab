@@ -10,7 +10,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1573437-7ddd-4176-81e2-2c3e3b3a2d76" name="Default Changelist" comment="注释">
+    <list default="true" id="d1573437-7ddd-4176-81e2-2c3e3b3a2d76" name="Default Changelist" comment="采样标志">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cgt.c" beforeDir="false" afterPath="$PROJECT_DIR$/cgt.c" afterDir="false" />
     </list>
@@ -76,7 +76,8 @@
     <MESSAGE value="init" />
     <MESSAGE value="调整50次周期判断代码位置" />
     <MESSAGE value="注释" />
-    <option name="LAST_COMMIT_MESSAGE" value="注释" />
+    <MESSAGE value="采样标志" />
+    <option name="LAST_COMMIT_MESSAGE" value="采样标志" />
   </component>
   <component name="WindowStateProjectService">
     <state x="261" y="80" key="Vcs.Push.Dialog.v2" timestamp="1603351911504">

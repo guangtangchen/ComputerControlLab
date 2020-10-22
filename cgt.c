@@ -153,6 +153,8 @@ void uart0_init(void)
 void uart0_rx_isr(void)
 {
  //uart has received a character in UDR
+ // todo 获取串口值
+ // dataIn = UDR0; //从缓冲器中获取数据
 }
 
 //ADC initialize
@@ -259,6 +261,11 @@ void display_upper(unsigned int value)
 	}
 }
 
+void uart_Putchar(char c)	// 向串口发送数据
+{
+	UDR0=c;
+}
+
 //
 void main(void)
 {
@@ -359,6 +366,15 @@ void main(void)
   	 count = 0;
   	 transMark=1;  // 采样标志
    }
+
+
+  // 向单片机发送数值
+  if(transMark == 1)// 采样周期到标志
+  {
+	 transMark = 0;
+	 while(!(UCSR0A & (1<<UDRE0)));  //判断串口发送寄存器是否不忙
+	 uart_Putchar(c_up);
+  }
 
 
   display(disValue);         // 左边两位数码管显示AD的结果
