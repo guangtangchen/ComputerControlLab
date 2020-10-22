@@ -273,6 +273,8 @@ void main(void)
  
  while(1)
  {
+
+ // 读取每个AD channel的值
   for(ADChannel=0;ADChannel<4;ADChannel++)
   {
    StartADC();
@@ -283,15 +285,20 @@ void main(void)
    ADMUX = 0x41 + ADChannel;
   }
   ADMUX = 0x40;	//reset ADC channel
-  
-  //码制转换，由0~1023到-511~512
+
+
+  //码制转换1，由0~1023到-511~512
   target = ch[0] - 511;
+
   
   // z函数处理
-  // code here 
+  // code here
+
   
-  //码制转换，由-511~512到0~2047到
+  //码制转换2，由-511~512到0~2047到
   target = (target + 511) * 2;
+
+
   //限制幅度
   if(target > 2047){
       target = 2047;
@@ -299,7 +306,9 @@ void main(void)
   if(target < 0){
       target = 0;
   }
-  
+
+
+  // 读取拨码，并针对性的处理
   key=0;
   if(!(PINB & (1<<K1)))
       key |= 0x08;
@@ -308,17 +317,14 @@ void main(void)
   if(!(PING & (1<<K3)))
       key |= 0x02;
   if(!(PING & (1<<K4)))
-      key |= 0x01;  
-  
+      key |= 0x01;
   switch(key)
-  {
+  { // 针对拨码的不同值，启动不同功能
    case 0:pwmValue[0] = pwmValue[1] = pwmValue[2] = pwmValue[3] = 0;break;
-   
    case 1:disValue = ch[0];break;
    case 2:disValue = ch[1];break;
    case 3:disValue = ch[2];break;
    case 4:disValue = ch[3];break;
-  
    case 5:pwmValue[0] = pwmValue[1] = pwmValue[2] = pwmValue[3] = 0;break;
    case 6:pwmValue[0] = pwmValue[1] = pwmValue[2] = pwmValue[3] = 511;break;
    case 7:pwmValue[0] = pwmValue[1] = pwmValue[2] = pwmValue[3] = 1023;break;
@@ -328,15 +334,13 @@ void main(void)
    			pwmValue[1] = ch[1]*2.001;
 			pwmValue[2] = ch[2]*2.001;
 			pwmValue[3] = ch[3]*2.001;break;
-   case 11:pwmValue[0] = 0; // 11的时候，第一个为0v，然后其他的为输入值
+   case 11:pwmValue[0] = 0; // 11的时候，第一个DA为0v，然后其他的为输入值
    			pwmValue[1] = target;
 			pwmValue[2] = target;
 			pwmValue[3] = target;break;
-   
    default:pwmValue[0] = pwmValue[1] = pwmValue[2] = pwmValue[3] = 0;
   }
-  
-  
+  // 向AD输出值
   OCR1AH = pwmValue[0]>>8;
   OCR1AL = pwmValue[0];
   OCR1BH = pwmValue[1]>>8;
@@ -346,15 +350,19 @@ void main(void)
   OCR3CH = pwmValue[3]>>8;
   OCR3CL = pwmValue[3];
 
+
   // 10ms中断一次，50次就是500ms，是我们的一个周期
   if(count>=50){
        //program here
   	 dis_value++;
   	 count = 0;
    }
+
+
   display(disValue);
   display_upper(dis_value);
-  //delay_ms(200);
+
  }
+
 }
 
