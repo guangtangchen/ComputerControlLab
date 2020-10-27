@@ -310,14 +310,17 @@ void main(void)
 
   // z函数处理
   // code here
-  u = DataGet - target
-  y = u - 0.6 * u0 + 0.2 * y0
-  y0 = y
-  u0 = u
+
+ // DataGet:电脑下发给单片机的指令值
+ // target:AD接收到的值
+  u = DataGet - target;
+  y = u - 0.6 * u0 + 0.2 * y0;
+  y0 = y;
+  u0 = u;
 
 
   //码制转换2，由-511~512到0~2047到
-  target = y   // 处理结果
+  target = y;   // 处理结果
   target = (target + 511) * 2;
 
 
