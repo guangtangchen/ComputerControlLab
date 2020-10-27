@@ -278,6 +278,10 @@ void main(void)
  int pwmValue[4]={0,0,0,0};
  int disValue=0;
  int key=0;
+ int u0 = 0;
+ int y0 = 0;
+ int u = 0;
+ int y = 0;
 
  init_devices();
  //insert your functional code here...
@@ -306,9 +310,14 @@ void main(void)
 
   // z函数处理
   // code here
+  u = DataGet - target
+  y = u - 0.6 * u0 + 0.2 * y0
+  y0 = y
+  u0 = u
 
 
   //码制转换2，由-511~512到0~2047到
+  target = y   // 处理结果
   target = (target + 511) * 2;
 
 
