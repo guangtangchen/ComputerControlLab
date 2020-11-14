@@ -51,6 +51,7 @@ int transMark = 0;  // 采样标志
 int DataGet = 0;
 int DataSend = 0;
 char get ;
+int init_time = 0;
 
 //显示码
 unsigned char g_aDisplayBuf[16]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07, \
@@ -282,6 +283,7 @@ void main(void)
  int y0 = 0;
  int u = 0;
  int y = 0;
+ int inData = 0;
 
  init_devices();
  //insert your functional code here...
@@ -304,33 +306,18 @@ void main(void)
   ADMUX = 0x40;	//reset ADC channel
 
 
-  //码制转换1，由0~1023到-511~512
-  target = ch[0] - 511;
-
-
   // z函数处理
   // code here
 
  // DataGet:电脑下发给单片机的指令值
  // target:AD接收到的值
-  u = DataGet - target;
-  y = u - 0.6 * u0 + 0.2 * y0;
-  y0 = y;
-  u0 = u;
-
-
-  //码制转换2，由-511~512到0~2047到
-  target = y;   // 处理结果
-  target = (target + 511) * 2;
-
-
-  //限制幅度
-  if(target > 2047){
-      target = 2047;
-  }
-  if(target < 0){
-      target = 0;
-  }
+ // inData时DataGet范围转换为-511到512的值
+ // 下发指令最大为256，对应1024，有一个四倍的关系；即80H对应0输入
+//  inData = DataGet * 4 - 511;
+//  u = DataGet - target;
+//  y = u - 0.6 * u0 + 0.2 * y0;
+//  y0 = y;
+//  u0 = u
 
 
   // 读取拨码，并针对性的处理
@@ -382,6 +369,40 @@ void main(void)
   	 dis_value++;
   	 count = 0;
   	 transMark=1;  // 采样标志
+
+  	 // 规定一个初始化时间，前2S串口下发的值无效，置为0(即对应128)，2S后串口开始生效
+  	 init_time += 1;
+  	 if (init_time <= 4){
+  	    DataGet = 128;
+  	 }
+
+
+  	 //码制转换1，由0~1023到-511~512
+     target = (ch[0] - 511)*(-2);
+
+  	 // 码制转换3
+  	 inData = DataGet * 4 - 512;
+
+  	 // 0.5S一次计算
+     u = inData - target;
+     y = u - 0.6 * u0 + 0.2 * y0;
+     y0 = y;
+     u0 = u;
+
+     //码制转换2，由-511~512到0~2047到
+     target = y;   // 处理结果
+     target = (target + 511) * 2;
+
+     //限制幅度
+     if(target > 2047){
+         target = 2047;
+     }
+     if(target < 0){
+         target = 0;
+     }
+
+	 //回传最大也只能到2047，所以需要把树数值降下来
+	 DataSend = target / 8;
    }
 
 
@@ -389,7 +410,6 @@ void main(void)
   if(transMark == 1)// 采样周期到标志
   {
 	 transMark = 0;
-	 DataSend ++;
 	 while(!(UCSR0A & (1<<UDRE0)));  //判断串口发送寄存器是否不忙
 	 uart_Putchar((char)DataSend);
   }
@@ -404,5 +424,3 @@ void main(void)
  }
 
 }
-
-

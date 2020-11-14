@@ -10,7 +10,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1573437-7ddd-4176-81e2-2c3e3b3a2d76" name="Default Changelist" comment="Z函数">
+    <list default="true" id="d1573437-7ddd-4176-81e2-2c3e3b3a2d76" name="Default Changelist" comment="分号">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cgt.c" beforeDir="false" afterPath="$PROJECT_DIR$/cgt.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,6 +71,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
@@ -78,10 +80,10 @@
     <MESSAGE value="电脑向串口发送数据" />
     <MESSAGE value="注释" />
     <MESSAGE value="收发数据" />
-    <MESSAGE value="分号" />
     <MESSAGE value="上传与下发" />
     <MESSAGE value="Z函数" />
-    <option name="LAST_COMMIT_MESSAGE" value="Z函数" />
+    <MESSAGE value="分号" />
+    <option name="LAST_COMMIT_MESSAGE" value="分号" />
   </component>
   <component name="WindowStateProjectService">
     <state x="93" y="93" width="1350" height="638" maximized="true" key="DiffContextDialog" timestamp="1603783992110">
@@ -96,9 +98,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="476" y="37" key="VCS.ChangeListViewerDialog/0.0.1536.824@0.0.1536.824" timestamp="1603783747295" />
-    <state x="261" y="80" key="Vcs.Push.Dialog.v2" timestamp="1603788983669">
+    <state x="261" y="80" key="Vcs.Push.Dialog.v2" timestamp="1603789759015">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="261" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1603788983669" />
+    <state x="261" y="80" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1603789759015" />
   </component>
 </project>
