@@ -225,8 +225,8 @@ void display(unsigned int value)
 {
 	char i;
 	//高八位，即除以4
-//	value = value / 4;
-//	int temp;
+    //	value = value / 4;
+    //	int temp;
 	for(i=3;i<5;i++)
 	{
 	 PORTC &=~ 0xF0;
@@ -248,7 +248,7 @@ void display(unsigned int value)
 void display_upper(unsigned int value)
 {
 	char i;
-//	int temp;
+    //	int temp;
 	for(i=1;i<3;i++)
 	{
 	 PORTC &=~ 0xF0;
@@ -275,7 +275,6 @@ void uart_Putchar(char c)	// 单片机向串口发送数据
 //
 void main(void)
 {
- //insert your functional code here...
  int pwmValue[4]={0,0,0,0};
  int disValue=0;
  int key=0;
@@ -286,39 +285,20 @@ void main(void)
  int inData = 0;
 
  init_devices();
- //insert your functional code here...
-
-
 
  while(1)
  {
 
- // 读取每个AD channel的值
+  // 读取每个AD channel的值
   for(ADChannel=0;ADChannel<4;ADChannel++)
   {
    StartADC();
    while(!(ADCSRA & (1<<ADIF)));
-   //conversion complete, read value (int) using...
-   ch[ADChannel] = ADCL;            //Read 8 low bits first (important)
-   ch[ADChannel] += (int)ADCH << 8; //read 2 high bits and shift into top byte
+   ch[ADChannel] = ADCL;
+   ch[ADChannel] += (int)ADCH << 8;
    ADMUX = 0x41 + ADChannel;
   }
   ADMUX = 0x40;	//reset ADC channel
-
-
-  // z函数处理
-  // code here
-
- // DataGet:电脑下发给单片机的指令值
- // target:AD接收到的值
- // inData时DataGet范围转换为-511到512的值
- // 下发指令最大为256，对应1024，有一个四倍的关系；即80H对应0输入
-//  inData = DataGet * 4 - 511;
-//  u = DataGet - target;
-//  y = u - 0.6 * u0 + 0.2 * y0;
-//  y0 = y;
-//  u0 = u
-
 
   // 读取拨码，并针对性的处理
   key=0;
@@ -365,7 +345,6 @@ void main(void)
 
   // 10ms中断一次，50次就是500ms，是我们的一个周期
   if(count>=50){
-       //program here
   	 dis_value++;
   	 count = 0;
   	 transMark=1;  // 采样标志
